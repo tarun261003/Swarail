@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwaRail - Desktop</title>
     <link rel="stylesheet" href="./Assets/styles.css">
+    <style>
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1300px;
+            background: #2c4a7f;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 100px;  
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -18,7 +30,7 @@
 
 <div class="container">
 
-    <!-- Left Panel -->
+    <!-- Left panel div-->
     <div class="left-panel">
         <h1>Welcome to SwaRail</h1>
         <img src="./Assets/AppLogo.png" alt="SwaRail Logo">
@@ -32,24 +44,20 @@
         </div>
     </div>
 
-    <!-- Right Panel -->
+    <!-- Right panel div-->
     <div class="right-panel">
-
-        <!-- Registered User Section -->
         <div class="section">
             <h2>Registered User</h2>
             <div class="form-group">
-                <input type="text" id="mobile-number" placeholder="Enter Mobile Number">
+                <input type="text" id="mobile-number" placeholder="Enter Mobile Number" autocomplete="off">
                 <button class="btn" onclick="saveMobile()">Login</button>
             </div>
             <a href="./registered.html" class="link">Login with Existing Account →</a>
         </div>
-
-        <!-- New User Registration -->
         <div class="section">
             <h2>New User Registration</h2>
             <div class="form-group">
-                <input type="text" id="reg-mob" placeholder="Enter Mobile Number">
+                <input type="text" id="reg-mob" placeholder="Enter Mobile Number" autocomplete="off">
                 <button class="btn"onclick="saveReg()">Register</button>
             </div>
            
@@ -62,7 +70,7 @@
     <h2>Latest Railway News</h2>
     <div id="news-container"></div>
 </div>
-<!-- Footer (Contact Section) -->
+<!-- Footer -->
 <footer class="footer" id="contact">
     <div class="footer-content">
         <div>
