@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwaRail - Sign Up</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            background: #2c4a7f;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .left-panel {
+            flex: 1;
+            background: #f4f4f9;
+            color: #007bff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            text-align: center;
+        }
+        .left-panel h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .left-panel img {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        .right-panel {
+            flex: 1.5;
+            padding: 60px;
+            background: white;
+        }
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #2c4a7f;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group i {
+            font-size: 18px;
+            margin-right: 15px;
+            color: #555;
+        }
+        .form-group input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            padding: 10px;
+            background: transparent;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 8px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .link {
+            display: block;
+            margin: 15px 0;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .recaptcha-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .terms {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .verify-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+        .verify-btn:hover {
+            background: #218838;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            .left-panel, .right-panel {
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+        <h1>Welcome to SwaRail!</h1>
+        <img src="./Assets/AppLogo.png" alt="SwaRail Logo">
+        <p>Effortless sign-up with secure verification.</p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+        <h2>Create Account</h2>
+
+        <form id="signup-form" action="#" method="POST">
+
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Name *" required>
+            </div>
+
+            <div class="form-group">
+                <input type="tel" id="phone" placeholder="Phone *" required>
+            </div>
+
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Email *" required>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="userID" placeholder="User ID *" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password *" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="confirmPassword" placeholder="Confirm Password *" required>
+            </div>
+            <div class="form-group">
+                <input type="number" id="MPIN" placeholder="Enter Your PIN" required>
+            </div>
+            <!-- reCAPTCHA -->
+            <div class="recaptcha-container">
+                <div class="g-recaptcha" data-sitekey="6LdsufYqAAAAAGYlvjetOLdqNoemOw3uM8-n0tjx"></div>
+            </div>
+
+            <button type="submit" class="btn">Sign Up</button>
+
+            <p class="terms">By continuing, you agree to our 
+                <a href="#" class="link">Terms of Use</a> & 
+                <a href="#" class="link">Privacy Policy</a>
+            </p>
+
+            <p>Already have an account? 
+                <a href="./registered.html" class="link">Sign In</a>
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('signup-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+
+        if (!strongPassword.test(password)) {
+            alert('Password must be at least 12 characters long and include uppercase, lowercase, number, and special character.');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
+        const userData = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            userID: document.getElementById('userID').value,
+            password: password,
+            mpin:document.getElementById('MPIN').value
+        };
+
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+        alert('Account created successfully!');
+    });
+    const phn=localStorage.getItem("reg-mob");
+    if(phn){
+        document.getElementById("phone").value=`${phn}`
+    }
+</script>
+
+</body>
+</html>
