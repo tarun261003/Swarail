@@ -199,67 +199,81 @@
 </div>
 
 <script>
-    document.getElementById('signup-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+  document.getElementById('signup-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const phn=document.getElementById("phone").value
-        const userid = document.getElementById('userID').value;
-        const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
-        
-        if (!strongPassword.test(password)) {
-            alert('Password must be at least 12 characters long and include uppercase, lowercase, number, and special character.');
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-        }
-        const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-        const existingUser = storedUsers.find(user => user.phone === phone);
-        const existing_name=storedUsers.find(user => user.userID === userid)
-
-        if (existingUser) {
-            alert('Phone number already exists. Please log in or use a different number.');
-            window.location.href = "./registered.html"; // Redirect to login page
-            return;
-        }
-        if (existingUser) {
-            alert('User ID already taken!');
-            return;
-        }
-        const userData = {
-            name: document.getElementById('name').value,
-            phone: phn,
-            email: document.getElementById('email').value,
-            userID: userid,
-            password: password,
-            mpin:document.getElementById('MPIN').value
-        };
-
-        localStorage.setItem('userData', JSON.stringify(userData));
-
-        alert('Account created successfully!');
-        window.location.href="./registered.html";
-    });
-    const phn=localStorage.getItem("reg-mob");
-    if(phn){
-        document.getElementById("phone").value=`${phn}`
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const phone = document.getElementById("phone").value;
+    const userid = document.getElementById('userID').value;
+    
+    const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+    
+    if (!strongPassword.test(password)) {
+        alert('Password must be at least 12 characters long and include uppercase, lowercase, number, and special character.');
+        return;
     }
-    function togglePassword() {
-        const passwordField = document.getElementById("password");
-        const toggleIcon = document.querySelector(".password-toggle");
 
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
-        } else {
-            passwordField.type = "password";
-            toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
-        }
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
     }
+
+   
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+    const existingUser = storedUsers.find(user => user.phone === phone);
+    const existingUserID = storedUsers.find(user => user.userID === userid);
+
+    if (existingUser) {
+        alert('Phone number already exists. Please log in or use a different number.');
+        window.location.href = "./registered.html"; 
+        return;
+    }
+
+    if (existingUserID) {
+        alert('User ID already taken!');
+        return;
+    }
+
+    
+    const userData = {
+        name: document.getElementById('name').value,
+        phone: phone,
+        email: document.getElementById('email').value,
+        userID: userid,
+        password: password,
+        mpin: document.getElementById('MPIN').value
+    };
+
+    
+    storedUsers.push(userData);
+
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+
+    alert('Account created successfully!');
+    window.location.href = "./registered.html";
+});
+
+
+const phn = localStorage.getItem("reg-mob");
+if (phn) {
+    document.getElementById("phone").value = phn;
+}
+
+function togglePassword() {
+    const passwordField = document.getElementById("password");
+    const toggleIcon = document.querySelector(".password-toggle");
+
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+        passwordField.type = "password";
+        toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+}
+
 </script>
 
 </body>

@@ -112,8 +112,6 @@
             <button id="mpinBtn" class="active">MPIN</button>
             <a href="./password.html"><button id="passwordBtn">Password</button></a>
         </div>
-
-        <!-- Form -->
         <form action="#" id="mpin-form" method="POST">
 
             <div class="form-group">
@@ -156,8 +154,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("mpin-form");
         console.log('form loaded!')
-        // Load stored mobile number
-
+        
         form.addEventListener("submit", (event) => {
             event.preventDefault();
 
