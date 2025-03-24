@@ -153,35 +153,47 @@
         document.getElementById("mobile-number").value = `${mobileNumber}`;
     }
     document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("mpin-form");
-        console.log('form loaded!')
-        
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
+    const form = document.getElementById("mpin-form");
+    console.log('form loaded!');
 
-            const phone = document.getElementById("mobile-number").value;
-            const mpin = document.getElementById("mp").value;
-           
-            const recaptchaResponse = grecaptcha.getResponse();
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-            if (!recaptchaResponse) {
-                alert("Please verify you're not a robot.");
-                return;
-            }
+        const phone = document.getElementById("mobile-number").value;
+        const mpin = document.getElementById("mp").value;
 
-            const userData = JSON.parse(localStorage.getItem("userData"));
-            console.log(userData)
-            if(!userData.mpin){
-                alert("MPIN hasnt been set use password tab!")
-            }
-            if (userData && userData.phone === phone && userData.mpin === mpin) {
-                alert("Login successful!");
-                window.location.href = "./main.html";
-            } else {
-                alert("Invalid phone number or password.");
-            }
-        });
+        const recaptchaResponse = grecaptcha.getResponse();
+
+        if (!recaptchaResponse) {
+            alert("Please verify you're not a robot.");
+            return;
+        }
+
+        // Retrieve all users
+        const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+        console.log(storedUsers);
+
+        // Find the matching user by phone or userID
+        const user = storedUsers.find(user => user.phone === phone || user.userID === phone);
+
+        if (!user) {
+            alert("User not found. Please sign up.");
+            return;
+        }
+
+        if (!user.mpin) {
+            alert("MPIN hasn't been set. Use the password tab!");
+            return;
+        }
+
+        if (user.mpin === mpin) {
+            alert("Login successful!");
+            window.location.href = "./main.html";
+        } else {
+            alert("Invalid phone number or MPIN.");
+        }
     });
+});
 
 </script>
 
