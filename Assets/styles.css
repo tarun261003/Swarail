@@ -148,7 +148,7 @@ h2 {
     max-width: 1023px; 
     height: 302px; 
     position: relative;
-    transform: scale(1.2,1.5);
+    transform: scale(1.2);
 }
 
 .slides {
@@ -258,6 +258,9 @@ h2 {
 }
 .footer .social-icons img:hover {
     transform: scale(1.1);
+}
+#twitter{
+    scale : 0.8;
 }
 @keyframes slide {
     0% { transform: translateX(0); }
