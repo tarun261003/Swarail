@@ -148,11 +148,12 @@ h2 {
     max-width: 1023px; 
     height: 302px; 
     position: relative;
+    transform: scale(1.2,1.5);
 }
 
 .slides {
     display: flex;
-    width: 300%; 
+    width: 100%; 
     animation: slide 8s infinite alternate ease-in-out;
 }
 
