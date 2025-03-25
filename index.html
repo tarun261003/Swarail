@@ -14,8 +14,38 @@
             background: #2c4a7f;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;  
+            margin: 100px auto;  
+        }
+        .left-panel {
+            flex: 1;
+            padding: 40px;
+            background: #f1f1f1;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;  
+        }
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 138px;
             overflow: hidden;
-            margin-top: 100px;  
+            margin-top: 20px;
+        }
+        .slides {
+            display: flex;
+            width: 300%;  /* 3 images, 100% each */
+            transition: transform 0.5s ease;
+        }
+        .slides img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;  
+        }
+        .right-panel {
+            flex: 1;
+            padding: 40px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -143,6 +173,7 @@
     
     async function fetchNews() {
         const apiKey = "pub_60623c484013efef7d48f51e46589c37f9375";
+        // query=railway or train or rain transport
         const response = await fetch(`https://newsdata.io/api/1/news?apikey=${apiKey}&q=railway%20or%20train%20or%20rail%20transport&country=in`);
         const data = await response.json();
         
