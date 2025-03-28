@@ -113,19 +113,25 @@
             <button id="mpinBtn" class="active">MPIN</button>
             <a href="./password.html"><button id="passwordBtn">Password</button></a>
         </div>
-        <form action="#" id="mpin-form" method="POST">
+        
+        <form id="mpin-form" method="POST">
 
             <div class="form-group">
                 <i class="fas fa-user"></i>
-                <input type="text" id="mobile-number" placeholder="UserID / Mobile Number" required>
+                <input type="text" id="mobile-number" placeholder="UserID / Mobile Number" 
+                       oninput="validateMobile()" maxlength="10" required>
             </div>
+
             <div class="form-group">
                 <i class="fas fa-key"></i>
-                <input type="number" id="mp" placeholder="MPIN" maxlength="6" required>
+                <input type="number" id="mp" placeholder="MPIN" maxlength="6" 
+                       oninput="validateMPIN()" required>
             </div>
+
             <div class="recaptcha">
                 <div class="g-recaptcha" data-sitekey="6LdsufYqAAAAAGYlvjetOLdqNoemOw3uM8-n0tjx"></div>
             </div>
+
             <button type="submit" class="btn">Proceed</button>
 
             <center><p class="link">Don't have an account? <a href="./signup.html">Sign Up</a></p></center>
@@ -137,64 +143,81 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const mpinBtn = document.getElementById("mpinBtn");
-        const passwordBtn = document.getElementById("passwordBtn");
-
-        function toggleActive(button1, button2) {
-            button1.classList.add("active");
-            button2.classList.remove("active");
-        }
-
-        mpinBtn.addEventListener("click", () => toggleActive(mpinBtn, passwordBtn));
-    });
-    const mobileNumber = localStorage.getItem("mobileNumber");
-    if (mobileNumber) {
-        document.getElementById("mobile-number").value = `${mobileNumber}`;
-    }
-    document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("mpin-form");
-    console.log('form loaded!');
-
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const phone = document.getElementById("mobile-number").value;
-        const mpin = document.getElementById("mp").value;
-
-        const recaptchaResponse = grecaptcha.getResponse();
-
-        if (!recaptchaResponse) {
-            alert("Please verify you're not a robot.");
-            return;
-        }
-
-        // Retrieve all users
-        const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-        console.log(storedUsers);
-
-        // Find the matching user by phone or userID
-        const user = storedUsers.find(user => user.phone === phone || user.userID === phone);
-
-        if (!user) {
-            alert("User not found. Please sign up.");
-            return;
-        }
-
-        if (!user.mpin) {
-            alert("MPIN hasn't been set. Use the password tab!");
-            return;
-        }
-
-        if (user.mpin === mpin) {
-            alert("Login successful!");
-            window.location.href = "./main.html";
+    // ✅ Mobile number validation (10 digits)
+    function validateMobile() {
+        const mobileInput = document.getElementById("mobile-number");
+        const value = mobileInput.value.trim();
+        
+        if (!/^\d{10}$/.test(value)) {
+            mobileInput.setCustomValidity("Please enter a valid 10-digit mobile number.");
         } else {
-            alert("Invalid phone number or MPIN.");
+            mobileInput.setCustomValidity("");
         }
-    });
-});
+        mobileInput.reportValidity();
+    }
 
+    // ✅ MPIN validation (6 digits)
+    function validateMPIN() {
+        const mpinInput = document.getElementById("mp");
+        const value = mpinInput.value.trim();
+        
+        if (!/^\d{4}$/.test(value)) {
+            mpinInput.setCustomValidity("MPIN must be exactly 6 digits.");
+        } else {
+            mpinInput.setCustomValidity("");
+        }
+        mpinInput.reportValidity();
+    }
+
+    // ✅ Handle Form Submission
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("mpin-form");
+
+        // Autofill mobile number if stored in localStorage
+        const mobileNumber = localStorage.getItem("mobileNumber");
+        if (mobileNumber) {
+            document.getElementById("mobile-number").value = mobileNumber;
+        }
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const phone = document.getElementById("mobile-number").value;
+            const mpin = document.getElementById("mp").value;
+            const recaptchaResponse = grecaptcha.getResponse();
+
+            if (!recaptchaResponse) {
+                alert("Please verify you're not a robot.");
+                return;
+            }
+
+            // Retrieve all users from localStorage
+            const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+            console.log("Stored Users:", storedUsers);
+
+            // Check if user exists by phone or userID
+            const user = storedUsers.find(user => user.phone === phone || user.userID === phone);
+
+            if (!user) {
+                alert("User not found. Please sign up.");
+                return;
+            }
+
+            if (!user.mpin) {
+                alert("MPIN hasn't been set. Use the password tab!");
+                return;
+            }
+
+            // Validate MPIN
+            if (user.mpin === mpin) {
+                alert("Login successful!");
+                window.location.href = "./main.html";
+            } else {
+                alert("Invalid phone number or MPIN.");
+            }
+        });
+    });
 </script>
 
 </body>

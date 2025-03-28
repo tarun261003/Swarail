@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwaRail - Sign Up</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="./Assets/styles.css">
     <link rel="icon" type="image/x-icon" href="./Assets/favicon.ico">
@@ -65,11 +65,6 @@
             margin-bottom: 25px;
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
-        .form-group i {
-            font-size: 18px;
-            margin-right: 15px;
-            color: #555;
-        }
         .form-group input {
             width: 100%;
             border: none;
@@ -78,7 +73,6 @@
             padding: 10px;
             background: transparent;
         }
-       
         .btn {
             display: inline-block;
             width: 100%;
@@ -155,28 +149,29 @@
             </div>
 
             <div class="form-group">
-                <input type="tel" id="phone" placeholder="Phone *" required>
+                <input type="tel" id="phone" placeholder="Phone *" required maxlength="10" oninput="validatePhone()">
             </div>
 
             <div class="form-group">
-                <input type="email" id="email" placeholder="Email *" required autocomplete="off">
+                <input type="email" id="email" placeholder="Email *" required oninput="validateEmail()">
             </div>
 
             <div class="form-group">
-                <input type="text" id="userID" placeholder="User ID *" required autocomplete="off">
+                <input type="text" id="userID" placeholder="User ID *" required>
             </div>
 
             <div class="form-group">
-                <input type="password" id="password" placeholder="Password *" required>
-                <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                <input type="password" id="password" placeholder="Password *" required oninput="validatePassword()">
             </div>
 
             <div class="form-group">
-                <input type="password" id="confirmPassword" placeholder="Confirm Password *" required>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password *" required oninput="validateConfirmPassword()">
             </div>
+
             <div class="form-group">
-                <input type="number" id="MPIN" placeholder="Enter Your PIN" required>
+                <input type="number" id="MPIN" placeholder="Enter Your 4-digit PIN" required oninput="validateMPIN()" maxlength="4">
             </div>
+
             <!-- reCAPTCHA -->
             <div class="recaptcha-container">
                 <div class="g-recaptcha" data-sitekey="6LdsufYqAAAAAGYlvjetOLdqNoemOw3uM8-n0tjx"></div>
@@ -200,68 +195,128 @@
 </div>
 
 <script>
-  document.getElementById('signup-form').addEventListener('submit', function(event) {
+   document.getElementById('signup-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const phone = document.getElementById("phone").value;
-    const userid = document.getElementById('userID').value;
-    
+    const name = document.getElementById('name');
+    const phone = document.getElementById('phone');
+    const email = document.getElementById('email');
+    const userID = document.getElementById('userID');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const mpin = document.getElementById('MPIN');
+
+    let isValid = true;
+
+    // Name Validation (Required, Min Length: 3)
+    if (name.value.trim().length < 3) {
+        name.setCustomValidity("Name must be at least 3 characters long.");
+        isValid = false;
+    } else {
+        name.setCustomValidity("");
+    }
+
+    // Phone Number Validation (10 digits)
+    if (!/^\d{10}$/.test(phone.value)) {
+        phone.setCustomValidity("Enter a valid 10-digit phone number.");
+        isValid = false;
+    } else {
+        phone.setCustomValidity("");
+    }
+
+    // Email Validation (Basic Format)
+    if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email.value)) {
+        email.setCustomValidity("Enter a valid email address.");
+        isValid = false;
+    } else {
+        email.setCustomValidity("");
+    }
+
+    // User ID Validation (Min Length: 5)
+    if (userID.value.trim().length < 5) {
+        userID.setCustomValidity("User ID must be at least 5 characters long.");
+        isValid = false;
+    } else {
+        userID.setCustomValidity("");
+    }
+
+    // Password Strength Validation
     const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
-    
-    if (!strongPassword.test(password)) {
-        alert('Password must be at least 12 characters long and include uppercase, lowercase, number, and special character.');
-        return;
+    if (!strongPassword.test(password.value)) {
+        password.setCustomValidity("Password must be at least 12 characters, include uppercase, lowercase, a number, and a special character.");
+        isValid = false;
+    } else {
+        password.setCustomValidity("");
     }
 
-    if (password !== confirmPassword) {
-        alert('Passwords do not match.');
-        return;
+    // Confirm Password Match
+    if (password.value !== confirmPassword.value) {
+        confirmPassword.setCustomValidity("Passwords do not match.");
+        isValid = false;
+    } else {
+        confirmPassword.setCustomValidity("");
     }
 
-   
+    // MPIN Validation (4-digit PIN)
+    if (!/^\d{4}$/.test(mpin.value)) {
+        mpin.setCustomValidity("MPIN must be a 4-digit number.");
+        isValid = false;
+    } else {
+        mpin.setCustomValidity("");
+    }
+
+    // Show validation errors
+    if (!isValid) {
+        name.reportValidity();
+        phone.reportValidity();
+        email.reportValidity();
+        userID.reportValidity();
+        password.reportValidity();
+        confirmPassword.reportValidity();
+        mpin.reportValidity();
+        return;
+    }
+    // Check for duplicate phone number or user ID
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-    const existingUser = storedUsers.find(user => user.phone === phone);
-    const existingUserID = storedUsers.find(user => user.userID === userid);
-
-    if (existingUser) {
-        alert('Phone number already exists. Please log in or use a different number.');
-        window.location.href = "./registered.html"; 
+    if (storedUsers.some(user => user.phone === phone.value)) {
+        phone.setCustomValidity("Phone number already exists. Please log in or use a different number.");
+        phone.reportValidity();
         return;
     }
 
-    if (existingUserID) {
-        alert('User ID already taken!');
+    if (storedUsers.some(user => user.userID === userID.value)) {
+        userID.setCustomValidity("User ID already taken!");
+        userID.reportValidity();
         return;
     }
-
-    
+    else{
+        userID.setCustomValidity("");
+        userID.reportValidity();
+    }
+    // Save user data
     const userData = {
-        name: document.getElementById('name').value,
-        phone: phone,
-        email: document.getElementById('email').value,
-        userID: userid,
-        password: password,
-        mpin: document.getElementById('MPIN').value
+        name: name.value.trim(),
+        phone: phone.value,
+        email: email.value.trim(),
+        userID: userID.value.trim(),
+        password: password.value,
+        mpin: mpin.value
     };
 
-    
     storedUsers.push(userData);
-
     localStorage.setItem('users', JSON.stringify(storedUsers));
 
     alert('Account created successfully!');
     window.location.href = "./registered.html";
 });
 
-
-const phn = localStorage.getItem("reg-mob");
-if (phn) {
-    document.getElementById("phone").value = phn;
+// Autofill phone number if stored in localStorage
+const storedPhone = localStorage.getItem("reg-mob");
+if (storedPhone) {
+    document.getElementById("phone").value = storedPhone;
 }
 
+// Password Toggle Function
 function togglePassword() {
     const passwordField = document.getElementById("password");
     const toggleIcon = document.querySelector(".password-toggle");

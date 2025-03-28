@@ -3,43 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SwaRail - Tickets & Offerings</title>
+    <link rel="stylesheet" href="./Assets/styles.css">
     <link rel="icon" type="image/x-icon" href="./Assets/favicon.ico">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            height: 100vh;
+            margin-top: 8%;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 20%;
+            background: #dadada;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 3px solid #1f355e;
+        }
+
+        .left-panel img {
+            max-width: 80%;
+            height: auto;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            width: 80%;
+            padding: 40px;
+            overflow-y: auto;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #2c4a7f;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-left {
+            font-size: 18px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .navbar-right a, .logout-btn {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .navbar-right a:hover, .logout-btn:hover {
+            color: #ffd700;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            color: #2c4a7f;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            flex: 1 1 calc(25% - 20px);
+            background: #f1f1f1;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: #2c4a7f;
+            color: white;
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Embed Section */
+        .embed-container {
+            margin-top: 30px;
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .embed-container embed {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c4a7f;
+            color: white;
+        }
+
+        .footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Fade-in Animation */
+        .fade-in {
+            opacity: 0;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Example single danger button -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown link
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-left">
+        Hi, Tarun Mangalampalli!
+    </div>
+    <div class="navbar-right">
+        <a onclick="loadContent('tickets')">Tickets</a>
+        <a onclick="loadContent('offerings')">More Offerings</a>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+        <img src="./Assets/AppLogo.png" alt="SwaRail Logo">
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel fade-in" id="content"></div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2025 SwaRail. All Rights Reserved. | <a href="#">Privacy Policy</a></p>
+</footer>
+
+<script>
+    const tickets = [
+        { title: "Reserved", img: "./Assets/reserved.png", link: "./Embeds/Reserved.html" },
+        { title: "Unreserved", img: "./Assets/unreserved.png", link: "./Embeds/Unreserved.html" },
+        { title: "Platform", img: "./Assets/platform.png", link: "./Embeds/Platform.html" }
+    ];
+
+    const offerings = [
+        { title: "Search Trains", img: "./Assets/search-trains.png", link: "./Embeds/TrainSearch.html" },
+        { title: "PNR Status", img: "./Assets/pnr-status.png", link: "./Embeds/PNRStatus.html" },
+        { title: "Coach Position", img: "./Assets/coach-position.png", link: "./Embeds/CoachPosition.html" },
+        { title: "Track Your Train", img: "./Assets/track-train.png", link: "./Embeds/TrackTrain.html" },
+    ];
+
+    function loadContent(section) {
+        const content = document.getElementById('content');
+        content.classList.remove('active');
+
+        setTimeout(() => {
+            const data = section === 'tickets' ? tickets : offerings;
+            let html = `
+                <div class="section">
+                    <h2>${section === 'tickets' ? 'Journey Planner' : 'More Offerings'}</h2>
+                    <div class="cards">
+            `;
+
+            data.forEach(item => {
+                html += `
+                    <div class="card" onclick="loadEmbed('${item.link}')">
+                        <img src="${item.img}" alt="${item.title}">
+                        <div class="card-title">${item.title}</div>
+                    </div>`;
+            });
+
+            html += `</div>
+                <div class="embed-container">
+                    <embed id="${section}-embed" src="" type="text/html">
+                </div>
+            </div>`;
+
+            content.innerHTML = html;
+            content.classList.add('active');
+        }, 300);
+    }
+
+    function loadEmbed(src) {
+        document.querySelector('embed').src = src;
+    }
+
+    function logout() {
+        alert("Logging out...");
+        window.location.href = "./index.html";
+    }
+</script>
 
 </body>
 </html>
