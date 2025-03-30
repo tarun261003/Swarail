@@ -1,4 +1,4 @@
-/* General Styles */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -62,7 +62,6 @@ button:hover {
     background: #0056b3;
 }
 
-/* Tab styles */
 .tab-container {
     display: flex;
     justify-content: space-between;

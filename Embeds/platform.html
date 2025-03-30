@@ -5,28 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Platform E-Ticket</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            transition: 0.3s;
+        }
+
+        .container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        h1, h2 {
+            color: #2c4a7f;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .counter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .counter button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background: #2c4a7f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .counter button:hover {
+            background: #1f355e;
+        }
+
+        .counter input {
+            width: 60px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        p {
+            font-size: 20px;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        button.pay-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.pay-btn:hover {
+            background: #218838;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Platform E-Ticket</h1>
+
     <div class="card">
         <h2>Station</h2>
-        <input type="text" placeholder="Enter Station Name">
+        <input type="text" id="station" placeholder="Enter Station Name">
 
         <h2>Number of Persons</h2>
         <div class="counter">
-            <button>-</button>
-            <input type="number" value="1" min="1">
-            <button>+</button>
+            <button onclick="updateCount(-1)">-</button>
+            <input type="number" id="ticket-count" value="1" min="1" readonly>
+            <button onclick="updateCount(1)">+</button>
         </div>
 
         <h2>Total Fare</h2>
-        <p>₹ 0.0</p>
+        <p id="total-fare">₹ 10.0</p>
 
-        <button>Pay ₹ 0.0</button>
+        <button class="pay-btn" id="pay-btn">Pay ₹ 10.0</button>
     </div>
 </div>
+
+<script>
+    const ticketCost = 10;  // Each ticket costs ₹10
+    const countInput = document.getElementById('ticket-count');
+    const totalFare = document.getElementById('total-fare');
+    const payButton = document.getElementById('pay-btn');
+
+    // Function to update count and fare
+    function updateCount(change) {
+        let currentCount = parseInt(countInput.value);
+        currentCount += change;
+
+        // Prevent negative or zero count
+        if (currentCount < 1) {
+            currentCount = 1;
+        }
+
+        countInput.value = currentCount;
+
+        // Calculate total fare
+        const fare = currentCount * ticketCost;
+        
+        // Update total fare and button
+        totalFare.textContent = `₹ ${fare.toFixed(2)}`;
+        payButton.textContent = `Pay ₹ ${fare.toFixed(2)}`;
+    }
+</script>
 
 </body>
 </html>

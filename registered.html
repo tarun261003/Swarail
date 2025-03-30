@@ -162,7 +162,7 @@
         const value = mpinInput.value.trim();
         
         if (!/^\d{4}$/.test(value)) {
-            mpinInput.setCustomValidity("MPIN must be exactly 6 digits.");
+            mpinInput.setCustomValidity("MPIN must be exactly 4 digits.");
         } else {
             mpinInput.setCustomValidity("");
         }
